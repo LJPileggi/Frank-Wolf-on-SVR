@@ -11,7 +11,9 @@ classdef SVR
         q
         Q
         A
+        A_eq
         b
+        b_eq
         C
         sigma
         eps
@@ -28,8 +30,10 @@ classdef SVR
             obj.set_ker(obj);
             obj.q = cat([obj.Y - obj.eps], [-obj.Y - obj.eps]);
             obj.Q = [-obj.Ker obj.Ker ; obj.Ker -obj.Ker];
-            obj.A = [-eye(obj.N), zeros(obj.N) ; zeros(obj.N) -eye(obj.N) ; eye(obj.N) zeros(obj.N) ; zeros(obj.N) eye(obj.N) ; ones(1, obj.N) - ones(1, obj.N) ; -ones(1, obj.N) ones(1, obj.N)];
-            obj.b = [zeros(2*obj.N, 1) ; obj.C*ones(2*obj.N, 1) ; 0 ; 0];
+            obj.A = [eye(obj.N) zeros(obj.N) ; zeros(obj.N) eye(obj.N)];
+            obj.A_eq = [ones(1, obj.N) - ones(1, obj.N)];
+            obj.b = [obj.C*ones(2*obj.N, 1)];
+            obj.b_eq = 0;
             obj.init = init;
             if init == "unif"
                 obj.alpha1 = -1+2*rand(size(X, 1), 1);
