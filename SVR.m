@@ -36,8 +36,8 @@ classdef SVR
             obj.b_eq = 0;
             obj.init = init;
             if init == "unif"
-                obj.alpha1 = -1+2*rand(size(X, 1), 1);
-                obj.alpha2 = -1+2*rand(size(X, 1), 1);
+                obj.alpha1 = rand(size(X, 1), 1);
+                obj.alpha2 = rand(size(X, 1), 1);
                 obj.update_alpha_gamma(obj);
             elseif init == "zero"
                 obj.alpha1 = zeros(size(X, 1), 1);
