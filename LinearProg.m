@@ -12,6 +12,9 @@ function x_min = LinearProg(c_vec, A, b, A_eq, b_eq)
         end
         rhs_div = Table(1:end-1,end)./Table(1:end-1,idx_enter);
         exit = min(rhs_div(rhs_div>0));
+        if exit == inf
+            break;
+        end
         idx_exit = find(rhs_div==exit);
         if size(exit, 2) == 0
             break;
@@ -24,6 +27,8 @@ function x_min = LinearProg(c_vec, A, b, A_eq, b_eq)
         Table(idx_exit+1:end,:) = Table(idx_exit+1:end,:) - Table(idx_exit+1:end,idx_enter)*Table(idx_exit,:);
     end
     x_min = zeros(size(Table, 1) - 1, 1);
-    x_min(pivots_idx(:,1)) = Table(pivots_idx(:,2),end);
+    if size(pivots_idx, 1) ~= 0
+        x_min(pivots_idx(:,1)) = Table(pivots_idx(:,2),end);
+    end
     x_min = x_min(1:size(c_vec, 1), 1);
 end

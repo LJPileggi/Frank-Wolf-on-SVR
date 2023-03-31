@@ -36,16 +36,12 @@ classdef SVR
             obj.b_eq = 0;
             obj.init = init;
             if init == "unif"
-                obj.alpha1 = rand(size(X, 1), 1);
-                obj.alpha2 = rand(size(X, 1), 1);
+                obj.alpha1 = obj.C*rand(size(X, 1), 1);
+                obj.alpha2 = obj.alpha1;
                 obj.update_alpha_gamma(obj);
             elseif init == "zero"
                 obj.alpha1 = zeros(size(X, 1), 1);
                 obj.alpha2 = zeros(size(X, 1), 1);
-                obj.update_alpha_gamma(obj);
-            elseif init == "norm"
-                obj.alpha1 = normrnd(0, 0.5, [size(X, 1), 1]);
-                obj.alpha2 = normrnd(0, 0.5, [size(X, 1), 1]);
                 obj.update_alpha_gamma(obj);
             else
                 error("Invalid initialisation method.");
