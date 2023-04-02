@@ -38,18 +38,23 @@ classdef SVR
             if init == "unif"
                 obj.alpha1 = obj.C*rand(size(X, 1), 1);
                 obj.alpha2 = obj.alpha1;
-                obj.update_alpha_gamma(obj);
+                obj.cat_alpha_gamma(obj);
             elseif init == "zero"
                 obj.alpha1 = zeros(size(X, 1), 1);
                 obj.alpha2 = zeros(size(X, 1), 1);
-                obj.update_alpha_gamma(obj);
+                obj.cat_alpha_gamma(obj);
             else
                 error("Invalid initialisation method.");
             end
         end
-        function obj = update_alpha_gamma(obj)
+        function obj = cat_alpha_gamma(obj)
             obj.alpha = cat(1, obj.alpha1, obj.alpha2);
             obj.gamma = obj.alpha1 - obj.alpha2;
+        end
+        function obj = update_alpha(obj, alpha_new)
+            obj.alpha1 = alpha_new(1:end/2);
+            obj.alpha2 = alpha_new(end/2+1:end);
+            obj.cat_alpha_gamma(obj);
         end
         function obj = set_ker(obj)
             obj.Ker = exp(-(obj.X.' * obj.X)/(2*obj.sigma^2));
